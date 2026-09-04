@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Vennancio.rec — Cinematic videomaker. Corporate videos and social media content produced worldwide." />
+<meta name="theme-color" content="#0D0D0D" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Vennancio.rec — Cinematic Videomaker" />
+<meta property="og:description" content="Corporate and social media films." />
+<meta property="og:image" content="assets/images/og-cover.jpg" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Vennancio.rec — Cinematic Videomaker" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Vennancio.rec",
+  "jobTitle": "Videomaker",
+  "url": "https://vennancio.rec"
+}
+</script>
+
+<title>Vennancio.rec — Cinematic Videomaker</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+
+<style>
+:root {
+  --primary: #FCAF00;
+  --graphite: #333230;
+  --black: #0D0D0D;
+  --dark: #1A1A1A;
+  --white: #FFFFFF;
+  --light: #BDBDBD;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --max-width: 1440px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --ease: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  background: var(--black);
+  color: var(--white);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+::selection { background: var(--primary); color: var(--black); }
+
+/* LANGUAGE GATE */
+.lang-gate {
+  position: fixed; inset: 0;
+  background: var(--black);
+  z-index: 10000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: var(--gutter);
+  transition: opacity 0.9s var(--ease), visibility 0.9s var(--ease);
+}
+.lang-gate.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.lang-gate::before,
+.lang-gate::after {
+  content: '';
+  position: absolute;
+  background: radial-gradient(ellipse, rgba(252,175,0,0.08), transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+.lang-gate::before { top: -20%; left: -10%; width: 60%; height: 60%; }
+.lang-gate::after { bottom: -20%; right: -10%; width: 60%; height: 60%; }
+.lang-gate-logo {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: 0.25em;
+  margin-bottom: clamp(3rem, 8vw, 5rem);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: gateRise 1s var(--ease-out) 0.2s forwards;
+  position: relative;
+}
+.lang-gate-logo::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem; left: 50%;
+  transform: translateX(-50%);
+  width: 40px; height: 1px;
+  background: var(--primary);
+}
+.lang-gate-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: gateRise 1s var(--ease-out) 0.4s forwards;
+  text-align: center;
+}
+.lang-gate-options {
+  display: flex; gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: gateRise 1s var(--ease-out) 0.6s forwards;
+}
+.lang-option {
+  width: 180px;
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  transition: all 0.5s var(--ease);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.lang-option::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--primary);
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease-out);
+  z-index: -1;
+}
+.lang-option:hover {
+  border-color: var(--primary);
+  color: var(--black);
+  transform: translateY(-4px);
+}
+.lang-option:hover::before { transform: translateY(0); }
+.lang-code {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.lang-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--light);
+  transition: color 0.4s var(--ease);
+}
+.lang-option:hover .lang-name { color: var(--black); }
+@keyframes gateRise { to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 500px) {
+  .lang-gate-options { flex-direction: column; width: 100%; }
+  .lang-option { width: 100%; max-width: 320px; }
+}
+
+/* CURSOR */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease), height 0.3s var(--ease);
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), border-color 0.3s var(--ease);
+}
+.cursor.is-hover { width: 0; height: 0; }
+.cursor-ring.is-hover { width: 72px; height: 72px; border-color: var(--primary); }
+@media (hover: none), (max-width: 1024px) {
+  .cursor, .cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+@media (hover: hover) and (min-width: 1025px) {
+  body, a, button { cursor: none; }
+}
+
+/* HEADER */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.5rem var(--gutter);
+  transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), padding 0.4s var(--ease), border-color 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.header.is-scrolled {
+  background: rgba(13,13,13,0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: 1rem var(--gutter);
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.2em;
+  position: relative;
+}
+.logo::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 8px; height: 2px;
+  background: var(--primary);
+}
+.nav-list {
+  list-style: none;
+  display: flex; gap: 2.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.nav-list a {
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s var(--ease);
+}
+.nav-list a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: var(--primary);
+  transition: width 0.4s var(--ease);
+}
+.nav-list a:hover { color: var(--primary); }
+.nav-list a:hover::after { width: 100%; }
+.header-right {
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.lang-switch {
+  display: flex; align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--light);
+  gap: 0.5rem;
+}
+.lang-switch button {
+  color: var(--light);
+  transition: color 0.3s var(--ease);
+  padding: 4px 2px;
+}
+.lang-switch button.is-active { color: var(--primary); }
+.lang-switch button:hover { color: var(--white); }
+.lang-switch .sep { opacity: 0.3; }
+.menu-toggle {
+  display: none;
+  width: 32px; height: 24px;
+  position: relative;
+  z-index: 101;
+}
+.menu-toggle span {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1.5px;
+  background: var(--white);
+  transition: all 0.4s var(--ease);
+}
+.menu-toggle span:nth-child(1) { top: 4px; }
+.menu-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); width: 70%; right: 0; left: auto; }
+.menu-toggle span:nth-child(3) { bottom: 4px; }
+.menu-toggle.is-active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+.menu-toggle.is-active span:nth-child(2) { opacity: 0; }
+.menu-toggle.is-active span:nth-child(3) { bottom: auto; top: 50%; transform: translateY(-50%) rotate(-45deg); }
+@media (max-width: 900px) {
+  .menu-toggle { display: block; }
+  .nav {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
+  }
+  .nav.is-open { opacity: 1; visibility: visible; }
+  .nav-list {
+    flex-direction: column;
+    gap: 2rem;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .nav-list li {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .nav.is-open .nav-list li {
+    opacity: 1; transform: translateY(0);
+  }
+  .nav.is-open .nav-list li:nth-child(1) { transition-delay: 0.2s; }
+  .nav.is-open .nav-list li:nth-child(2) { transition-delay: 0.28s; }
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center; gap: 0.75rem;
+  padding: 1.05rem 2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s var(--ease), border-color 0.4s var(--ease);
+  isolation: isolate;
+}
+.btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--primary);
+  transform: translateY(101%);
+  transition: transform 0.5s var(--ease);
+  z-index: -1;
+}
+.btn:hover { color: var(--black); border-color: var(--primary); }
+.btn:hover::before { transform: translateY(0); }
+.btn .arrow {
+  display: inline-block;
+  width: 14px; height: 14px;
+  position: relative;
+}
+.btn .arrow::after {
+  content: '→';
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.4s var(--ease);
+}
+.btn:hover .arrow::after { transform: translateX(4px); }
+.btn--primary {
+  background: var(--primary);
+  color: var(--black);
+  border-color: var(--primary);
+}
+.btn--primary::before { background: var(--white); }
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 120px var(--gutter) 100px;
+}
+.hero-video-bg {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  background-color: var(--black);
+  background-image: url('https://img.youtube.com/vi/J7cNhocpdUI/maxresdefault.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.hero-video-bg iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 56.25vw;
+  min-height: 100vh;
+  min-width: 177.77vh;
+  pointer-events: none;
+  border: none;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(13,13,13,0.5) 0%, rgba(13,13,13,0.35) 40%, rgba(13,13,13,0.85) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  opacity: 0;
+  transform: translateY(24px);
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--primary);
+}
+
+.hero-categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 720px;
+  opacity: 0;
+  transform: translateY(24px);
+}
+@media (max-width: 640px) {
+  .hero-categories { grid-template-columns: 1fr; }
+}
+.hero-category {
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  background: rgba(13,13,13,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: left;
+  transition: background 0.5s var(--ease);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex; flex-direction: column;
+  gap: 0.5rem;
+  min-height: 160px;
+  color: inherit;
+}
+.hero-category::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--primary);
+  transform: translateY(101%);
+  transition: transform 0.55s var(--ease-out);
+  z-index: -1;
+}
+.hero-category:hover { color: var(--black); }
+.hero-category:hover::before { transform: translateY(0); }
+.hero-category-num {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: var(--primary);
+  transition: color 0.4s var(--ease);
+}
+.hero-category:hover .hero-category-num { color: var(--black); }
+.hero-category-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-top: auto;
+}
+.hero-category-sub {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--light);
+  transition: color 0.4s var(--ease);
+}
+.hero-category:hover .hero-category-sub { color: var(--black); }
+.hero-category-arrow {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  font-size: 1rem;
+  transition: transform 0.5s var(--ease-out);
+  opacity: 0.6;
+}
+.hero-category:hover .hero-category-arrow {
+  transform: translate(4px, -4px);
+  opacity: 1;
+}
+
+.hero-secondary {
+  display: flex; align-items: center; gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(24px);
+}
+.hero-play-link {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--light);
+  transition: color 0.3s var(--ease);
+  padding: 0.5rem 0;
+}
+.hero-play-link:hover { color: var(--primary); }
+.hero-play-link .play-triangle {
+  width: 0; height: 0;
+  border-left: 8px solid var(--primary);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+body.is-ready .hero-eyebrow {
+  animation: heroRise 900ms var(--ease-out) 200ms forwards;
+}
+body.is-ready .hero-categories {
+  animation: heroRise 900ms var(--ease-out) 330ms forwards;
+}
+body.is-ready .hero-secondary {
+  animation: heroRise 900ms var(--ease-out) 460ms forwards;
+}
+@keyframes heroRise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 1.5rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--light);
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+}
+.scroll-indicator::after {
+  content: '';
+  width: 1px; height: 32px;
+  background: linear-gradient(180deg, var(--primary), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* SECTION BASE */
+section:not(.hero) {
+  padding: clamp(4rem, 9vw, 8rem) var(--gutter);
+  position: relative;
+}
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.section-label {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.section-label::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--primary);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+.section-title em { font-style: normal; color: var(--primary); }
+
+/* WORK — 2 sub-categorias */
+.work { background: var(--dark); }
+.work-category {
+  padding-top: clamp(3rem, 6vw, 5rem);
+  scroll-margin-top: 80px;
+}
+.work-category:first-of-type { padding-top: 0; }
+.work-category + .work-category {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+.work-category-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.work-category-count {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: var(--light);
+}
+.work-category-count span { color: var(--primary); }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.25rem;
+}
+.portfolio-card {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--dark) 0%, var(--black) 100%);
+  isolation: isolate;
+  cursor: pointer;
+}
+.portfolio-card.is-wide { grid-column: span 2; aspect-ratio: 16 / 10; }
+@media (max-width: 700px) {
+  .portfolio-card.is-wide { grid-column: span 1; aspect-ratio: 4 / 5; }
+}
+.portfolio-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out), filter 0.6s var(--ease);
+}
+.portfolio-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(13,13,13,0) 40%, rgba(13,13,13,0.92) 100%);
+  z-index: 1;
+  transition: opacity 0.5s var(--ease);
+}
+.portfolio-card:hover img { transform: scale(1.06); filter: brightness(0.75); }
+.portfolio-info {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1.75rem;
+  z-index: 2;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1rem;
+}
+.portfolio-info-text {
+  transform: translateY(8px);
+  transition: transform 0.5s var(--ease-out);
+  min-width: 0;
+}
+.portfolio-card:hover .portfolio-info-text { transform: translateY(0); }
+.portfolio-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+  line-height: 1.1;
+}
+.portfolio-year {
+  font-size: 0.75rem;
+  color: var(--light);
+}
+.portfolio-play {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.4s var(--ease);
+  flex-shrink: 0;
+}
+.portfolio-play::before {
+  content: '';
+  width: 0; height: 0;
+  border-left: 8px solid var(--white);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  margin-left: 2px;
+  transition: border-left-color 0.4s var(--ease);
+}
+.portfolio-card:hover .portfolio-play {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.portfolio-card:hover .portfolio-play::before { border-left-color: var(--black); }
+.portfolio-empty {
+  grid-column: 1 / -1;
+  text-align: left;
+  padding: 3rem 0;
+  color: var(--light);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+/* CONTACT */
+.contact { background: var(--black); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-header { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+.contact-item {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.contact-item-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+}
+.contact-item a {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  transition: color 0.3s var(--ease);
+}
+.contact-item a:hover { color: var(--primary); }
+.contact-form { display: grid; gap: 1.5rem; }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+.form-field { position: relative; }
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 1rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s var(--ease);
+  resize: none;
+}
+.form-field textarea { min-height: 100px; padding-top: 1.5rem; }
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-bottom-color: var(--primary);
+}
+.form-field label {
+  position: absolute;
+  top: 1rem; left: 0;
+  font-size: 0.8rem;
+  color: var(--light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: all 0.3s var(--ease);
+}
+.form-field input:focus + label,
+.form-field input:not(:placeholder-shown) + label,
+.form-field textarea:focus + label,
+.form-field textarea:not(:placeholder-shown) + label {
+  top: -0.5rem;
+  font-size: 0.65rem;
+  color: var(--primary);
+}
+.form-error {
+  color: #ff6b6b;
+  font-size: 0.72rem;
+  margin-top: 0.4rem;
+  display: none;
+  letter-spacing: 0.05em;
+}
+.form-field.is-error .form-error { display: block; }
+.form-field.is-error input,
+.form-field.is-error textarea { border-bottom-color: #ff6b6b; }
+.form-success {
+  padding: 1rem;
+  background: rgba(252,175,0,0.1);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  color: var(--primary);
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  display: none;
+}
+.form-success.is-visible { display: block; }
+
+/* FOOTER */
+.footer {
+  background: var(--black);
+  padding: 3.5rem var(--gutter) 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--light);
+  letter-spacing: 0.05em;
+}
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  color: var(--white);
+}
+.footer-socials { display: flex; gap: 1.5rem; }
+.footer-socials a {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 0.3s var(--ease);
+}
+.footer-socials a:hover { color: var(--primary); }
+
+/* MODAL */
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--gutter);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
+}
+.modal.is-open { opacity: 1; visibility: visible; }
+.modal-content {
+  width: 100%; max-width: 1200px;
+  position: relative;
+  transform: scale(0.96);
+  transition: transform 0.6s var(--ease-out);
+}
+.modal.is-open .modal-content { transform: scale(1); }
+.modal-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--black);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.modal-video iframe,
+.modal-video video {
+  width: 100%; height: 100%;
+  border: none;
+}
+.modal-close {
+  position: absolute;
+  top: -3rem; right: 0;
+  width: 44px; height: 44px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.4s var(--ease);
+}
+.modal-close:hover { background: var(--primary); color: var(--black); border-color: var(--primary); transform: rotate(90deg); }
+.modal-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.modal-info-item-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.modal-info-item-value {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+/* REVEALS */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.no-scroll { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE GATE -->
+<div class="lang-gate" id="langGate" aria-label="Select language">
+  <div class="lang-gate-logo">VENNANCIO.REC</div>
+  <div class="lang-gate-label">Select your language / Selecione o idioma</div>
+  <div class="lang-gate-options">
+    <button class="lang-option" data-lang="en-US">
+      <span class="lang-code">EN-US</span>
+      <span class="lang-name">English</span>
+    </button>
+    <button class="lang-option" data-lang="pt-BR">
+      <span class="lang-code">PT-BR</span>
+      <span class="lang-name">Português</span>
+    </button>
+  </div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="#home" class="logo">VENNANCIO.REC</a>
+    <nav class="nav" id="nav" aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a href="#work" data-i18n="nav.work">Work</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-right">
+      <div class="lang-switch">
+        <button data-lang-switch="en-US" class="is-active">EN</button>
+        <span class="sep">/</span>
+        <button data-lang-switch="pt-BR">PT</button>
+      </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-video-bg" id="heroVideoBg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow" data-i18n="hero.eyebrow">Works</div>
+
+    <div class="hero-categories">
+      <a href="#corporate" class="hero-category" data-category="corporate">
+        <div class="hero-category-num">01</div>
+        <span class="hero-category-arrow">↗</span>
+        <div class="hero-category-title" data-i18n="category.corporate">Corporate</div>
+        <div class="hero-category-sub" data-i18n="hero.cat1sub">Brand & Institutional</div>
+      </a>
+      <a href="#social" class="hero-category" data-category="social">
+        <div class="hero-category-num">02</div>
+        <span class="hero-category-arrow">↗</span>
+        <div class="hero-category-title" data-i18n="category.social">Social Media</div>
+        <div class="hero-category-sub" data-i18n="hero.cat2sub">Reels & Content</div>
+      </a>
+    </div>
+
+    <div class="hero-secondary">
+      <a href="https://youtu.be/J7cNhocpdUI" target="_blank" rel="noopener" class="hero-play-link">
+        <span class="play-triangle"></span>
+        <span data-i18n="hero.withSound">Watch demoreel with sound</span>
+      </a>
+    </div>
+  </div>
+
+  <a href="#work" class="scroll-indicator" data-i18n="hero.scroll">Scroll</a>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="section-inner">
+
+    <div class="work-category" id="corporate">
+      <div class="work-category-header">
+        <div>
+          <div class="section-label" data-i18n="category.corporate">Corporate</div>
+          <h2 class="section-title" data-i18n-html="work.corporate.title">Brand <em>videos.</em></h2>
+        </div>
+        <div class="work-category-count"><span>01</span> / 02</div>
+      </div>
+      <div class="portfolio-grid" id="gridCorporate"></div>
+    </div>
+
+    <div class="work-category" id="social">
+      <div class="work-category-header">
+        <div>
+          <div class="section-label" data-i18n="category.social">Social Media</div>
+          <h2 class="section-title" data-i18n-html="work.social.title">Reels <em>& content.</em></h2>
+        </div>
+        <div class="work-category-count"><span>02</span> / 02</div>
+      </div>
+      <div class="portfolio-grid" id="gridSocial"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <header class="contact-header reveal">
+      <div class="section-label" data-i18n="contact.label">Contact</div>
+      <h2 class="section-title" data-i18n-html="contact.title">Let's create <em>something.</em></h2>
+    </header>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-item-label" data-i18n="contact.email">Email</div>
+          <a href="mailto:contact@vennancio.rec">contact@vennancio.rec</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label" data-i18n="contact.instagram">Instagram</div>
+          <a href="https://instagram.com/vennancio.rec" target="_blank" rel="noopener">@vennancio.rec</a>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <input type="text" id="name" name="name" placeholder=" " required>
+            <label for="name" data-i18n="form.name">Name</label>
+            <div class="form-error" data-i18n="form.errName">Please enter your name.</div>
+          </div>
+          <div class="form-field">
+            <input type="email" id="email" name="email" placeholder=" " required>
+            <label for="email" data-i18n="form.email">Email</label>
+            <div class="form-error" data-i18n="form.errEmail">Invalid email.</div>
+          </div>
+        </div>
+        <div class="form-field">
+          <textarea id="message" name="message" placeholder=" " required></textarea>
+          <label for="message" data-i18n="form.message">Message</label>
+          <div class="form-error" data-i18n="form.errMessage">Please write a message.</div>
+        </div>
+        <div class="form-success" id="formSuccess" data-i18n="form.success">Message sent. I'll get back to you shortly.</div>
+        <button type="submit" class="btn btn--primary" style="justify-self: start;" data-i18n="form.submit">Send Message <span class="arrow"></span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">VENNANCIO.REC</div>
+    <div class="footer-socials">
+      <a href="https://instagram.com/vennancio.rec" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:contact@vennancio.rec">Email</a>
+    </div>
+    <div>© <span id="year"></span> Vennancio.rec</div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="videoModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div class="modal-video" id="modalVideo"></div>
+    <div class="modal-info" id="modalInfo"></div>
+  </div>
+</div>
+
+<script>
+/* CONFIG */
+const DEMOREEL_ID = 'J7cNhocpdUI';
+
+// ═══════════════════════════════════════════════════════════
+// TROCAR pelo seu endpoint do Formspree (formspree.io):
+// Substitua YOUR_FORM_ID pelo código que veio depois de /f/
+// Exemplo: https://formspree.io/f/xnrgpezr
+// ═══════════════════════════════════════════════════════════
+const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+/* TRANSLATIONS */
+const translations = {
+  'en-US': {
+    'nav.work': 'Work',
+    'nav.contact': 'Contact',
+    'hero.eyebrow': 'Works',
+    'hero.cat1sub': 'Brand & Institutional',
+    'hero.cat2sub': 'Reels & Content',
+    'hero.withSound': 'Watch demoreel with sound',
+    'hero.scroll': 'Scroll',
+    'work.corporate.title': 'Brand <em>videos.</em>',
+    'work.social.title': 'Reels <em>& content.</em>',
+    'work.empty': 'New projects coming soon.',
+    'category.corporate': 'Corporate',
+    'category.social': 'Social Media',
+    'contact.label': 'Contact',
+    'contact.title': "Let's create <em>something.</em>",
+    'contact.email': 'Email',
+    'contact.instagram': 'Instagram',
+    'form.name': 'Name',
+    'form.email': 'Email',
+    'form.message': 'Message',
+    'form.errName': 'Please enter your name.',
+    'form.errEmail': 'Invalid email.',
+    'form.errMessage': 'Please write a message.',
+    'form.success': "Message sent. I'll get back to you shortly.",
+    'form.submit': 'Send Message <span class="arrow"></span>',
+    'modal.category': 'Category',
+    'modal.year': 'Year',
+    'modal.project': 'Project'
+  },
+  'pt-BR': {
+    'nav.work': 'Trabalhos',
+    'nav.contact': 'Contato',
+    'hero.eyebrow': 'Trabalhos',
+    'hero.cat1sub': 'Marcas & Institucionais',
+    'hero.cat2sub': 'Reels & Conteúdo',
+    'hero.withSound': 'Assistir demoreel com som',
+    'hero.scroll': 'Rolar',
+    'work.corporate.title': 'Vídeos de <em>marca.</em>',
+    'work.social.title': 'Reels <em>& conteúdo.</em>',
+    'work.empty': 'Novos projetos em breve.',
+    'category.corporate': 'Institucionais',
+    'category.social': 'Redes Sociais',
+    'contact.label': 'Contato',
+    'contact.title': 'Vamos criar <em>algo.</em>',
+    'contact.email': 'Email',
+    'contact.instagram': 'Instagram',
+    'form.name': 'Nome',
+    'form.email': 'Email',
+    'form.message': 'Mensagem',
+    'form.errName': 'Por favor, informe seu nome.',
+    'form.errEmail': 'Email inválido.',
+    'form.errMessage': 'Por favor, escreva uma mensagem.',
+    'form.success': 'Mensagem enviada. Retornarei em breve.',
+    'form.submit': 'Enviar Mensagem <span class="arrow"></span>',
+    'modal.category': 'Categoria',
+    'modal.year': 'Ano',
+    'modal.project': 'Projeto'
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════
+   👇 SEUS VÍDEOS
+   ═══════════════════════════════════════════════════════════
+   Regras:
+   • category: 'corporate' ou 'social'
+   • thumb: deixe '' vazio pra usar thumb automática
+     (funciona pra YouTube e Google Drive)
+   • wide: true = card grande ocupando 2 colunas (destaque)
+   ═══════════════════════════════════════════════════════════ */
+const portfolioItems = [
+  // ───── CORPORATE ─────
+  {
+    id: 1,
+    title: 'Contagem 114 Anos — Região Sede',
+    category: 'corporate',
+    year: 2025,
+    thumb: '',
+    video: 'https://youtu.be/SqGT1pBrN1o',
+    wide: true
+  },
+  {
+    id: 2,
+    title: 'DIN Distribuidora — Brown-Forman',
+    category: 'corporate',
+    year: 2025,
+    thumb: '',
+    video: 'https://drive.google.com/file/d/1Mmq_Kd8qfsgHUluvY9-Wg-OAeNKsrMkL/view'
+  },
+  {
+    id: 3,
+    title: 'Infornet 15 Anos',
+    category: 'corporate',
+    year: 2025,
+    thumb: '',
+    video: 'https://youtu.be/Mt81Db5QXxs'
+  },
+
+  // ───── SOCIAL MEDIA ─────
+  {
+    id: 4,
+    title: 'Prefeitura de Contagem — Arraiá',
+    category: 'social',
+    year: 2026,
+    thumb: '',
+    video: 'https://drive.google.com/file/d/1vVqaeb56DRJkuVsGD2JhHXFzRvmsclmy/view'
+  },
+  {
+    id: 5,
+    title: 'Prefeitura de Contagem — Obra de Mobilidade',
+    category: 'social',
+    year: 2026,
+    thumb: '',
+    video: 'https://drive.google.com/file/d/14nNVTSB1W8Lz5nIaOi0Esevxk9Yr2Y7U/view'
+  },
+  {
+    id: 6,
+    title: 'EPIC By Pininfarina — Maison Media',
+    category: 'social',
+    year: 2025,
+    thumb: '',
+    video: 'https://drive.google.com/file/d/1tcwzXHuhE_eX8YZ6qNoX1MIFjbfEESMt/view',
+    wide: true
+  },
+  {
+    id: 7,
+    title: 'H.I Pinheiros — Maison Media',
+    category: 'social',
+    year: 2025,
+    thumb: '',
+    video: 'https://drive.google.com/file/d/17IUwkWPO3PceYjyVE4Thec_xHiLbC1A2/view'
+  },
+  {
+    id: 8,
+    title: 'Duplex Panamby — Maison Media',
+    category: 'social',
+    year: 2025,
+    thumb: '',
+    video: 'https://drive.google.com/file/d/18MyU2Q_BJgV5GIwRQT3KMmWcBmvpxpPZ/view'
+  }
+];
+
+/* STATE + INIT */
+let currentLang = 'en-US';
+let lenis = null;
+let revealObserver = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.body.classList.add('no-scroll');
+
+  setupLanguageGate();
+  setupHeader();
+  setupMenu();
+  setupCursor();
+  setupReveals();
+  setupModal();
+  setupForm();
+});
+
+/* LANGUAGE */
+function setupLanguageGate() {
+  document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectLanguage(btn.dataset.lang);
+      document.getElementById('langGate').classList.add('is-hidden');
+      document.body.classList.remove('no-scroll');
+      loadHeroVideo();
+      document.body.classList.add('is-ready');
+      setTimeout(initSite, 400);
+    });
+  });
+
+  document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+    btn.addEventListener('click', () => selectLanguage(btn.dataset.langSwitch));
+  });
+}
+
+function selectLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.setAttribute('lang', lang === 'en-US' ? 'en' : 'pt-BR');
+  applyTranslations();
+  document.querySelectorAll('[data-lang-switch]').forEach(b => {
+    b.classList.toggle('is-active', b.dataset.langSwitch === lang);
+  });
+  renderAllCategories();
+}
+
+function applyTranslations() {
+  const dict = translations[currentLang];
+  if (!dict) return;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.dataset.i18nHtml;
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+}
+
+function t(key) {
+  return (translations[currentLang] && translations[currentLang][key]) || key;
+}
+
+/* HERO YOUTUBE BACKGROUND */
+function loadHeroVideo() {
+  const container = document.getElementById('heroVideoBg');
+  if (!container || container.querySelector('iframe')) return;
+
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube.com/embed/${DEMOREEL_ID}?autoplay=1&mute=1&loop=1&playlist=${DEMOREEL_ID}&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&disablekb=1`;
+  iframe.setAttribute('allow', 'autoplay; encrypted-media');
+  iframe.setAttribute('title', 'Demoreel background');
+  iframe.setAttribute('tabindex', '-1');
+  container.appendChild(iframe);
+}
+
+/* INIT SITE */
+function initSite() {
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      smoothTouch: false
+    });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    if (typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+    }
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href.length > 1) {
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          if (lenis) lenis.scrollTo(target, { offset: -60 });
+          else target.scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('nav').classList.remove('is-open');
+          document.getElementById('menuToggle').classList.remove('is-active');
+          document.body.classList.remove('no-scroll');
+        }
+      }
+    });
+  });
+
+  renderAllCategories();
+
+  document.querySelectorAll('.btn--primary').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+}
+
+/* HEADER */
+function setupHeader() {
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('is-scrolled', window.scrollY > 50);
+  });
+}
+
+/* MOBILE MENU */
+function setupMenu() {
+  const menuToggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('nav');
+  menuToggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('is-open');
+    menuToggle.classList.toggle('is-active');
+    menuToggle.setAttribute('aria-expanded', open);
+    document.body.classList.toggle('no-scroll', open);
+  });
+}
+
+/* CURSOR */
+function setupCursor() {
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  if (!(window.matchMedia('(hover: hover)').matches && window.innerWidth > 1024)) return;
+
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest('a, button, [data-magnet]')) {
+      cursor.classList.add('is-hover');
+      cursorRing.classList.add('is-hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest('a, button, [data-magnet]')) {
+      cursor.classList.remove('is-hover');
+      cursorRing.classList.remove('is-hover');
+    }
+  });
+}
+
+/* REVEALS */
+function setupReveals() {
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}
+
+/* THUMB AUTOMÁTICA — detecta YouTube ou Drive e monta URL da thumbnail */
+function getAutoThumb(item) {
+  if (item.thumb && item.thumb.trim() !== '') return item.thumb;
+  const url = item.video || '';
+
+  // Google Drive
+  const drive = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+  if (drive) return `https://drive.google.com/thumbnail?id=${drive[1]}&sz=w1600`;
+
+  // YouTube (formatos: watch?v=, youtu.be/)
+  const ytWatch = url.match(/youtube\.com\/watch\?v=([^&]+)/);
+  if (ytWatch) return `https://img.youtube.com/vi/${ytWatch[1]}/maxresdefault.jpg`;
+  const ytShort = url.match(/youtu\.be\/([^?]+)/);
+  if (ytShort) return `https://img.youtube.com/vi/${ytShort[1]}/maxresdefault.jpg`;
+
+  return '';
+}
+
+/* PORTFOLIO — renderiza 2 grids */
+function renderAllCategories() {
+  renderCategoryGrid('gridCorporate', 'corporate');
+  renderCategoryGrid('gridSocial', 'social');
+}
+
+function renderCategoryGrid(gridId, category) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const items = portfolioItems.filter(item => item.category === category);
+
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="portfolio-empty">${t('work.empty')}</div>`;
+    return;
+  }
+
+  items.forEach((item, i) => {
+    const card = document.createElement('article');
+    card.className = 'portfolio-card reveal';
+    if (item.wide) card.classList.add('is-wide');
+    card.style.transitionDelay = `${(i % 4) * 0.08}s`;
+
+    const thumbUrl = getAutoThumb(item);
+    const imgTag = thumbUrl
+      ? `<img src="${thumbUrl}" alt="${item.title}" loading="lazy" onerror="this.style.display='none'">`
+      : '';
+
+    card.innerHTML = `
+      ${imgTag}
+      <div class="portfolio-info">
+        <div class="portfolio-info-text">
+          <h3 class="portfolio-title">${item.title}</h3>
+          <div class="portfolio-year">${item.year}</div>
+        </div>
+        <div class="portfolio-play" aria-hidden="true"></div>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(item));
+    grid.appendChild(card);
+    if (revealObserver) revealObserver.observe(card);
+  });
+}
+
+/* MODAL */
+function processVideoUrl(url) {
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+  if (driveMatch) return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+  const ytWatch = url.match(/youtube\.com\/watch\?v=([^&]+)/);
+  if (ytWatch) return `https://www.youtube.com/embed/${ytWatch[1]}?autoplay=1&rel=0&modestbranding=1`;
+  const ytShort = url.match(/youtu\.be\/([^?]+)/);
+  if (ytShort) return `https://www.youtube.com/embed/${ytShort[1]}?autoplay=1&rel=0&modestbranding=1`;
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch && !url.includes('player.vimeo.com')) {
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+  }
+  return url;
+}
+
+function setupModal() {
+  const modal = document.getElementById('videoModal');
+  const modalClose = document.getElementById('modalClose');
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+  });
+}
+
+function openModal(item) {
+  const modal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  const modalInfo = document.getElementById('modalInfo');
+
+  const videoUrl = processVideoUrl(item.video);
+  const isIframe = /vimeo|youtube|drive\.google|wistia|streamable|loom|dailymotion/.test(videoUrl);
+  modalVideo.innerHTML = isIframe
+    ? `<iframe src="${videoUrl}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
+    : `<video controls autoplay><source src="${videoUrl}" type="video/mp4"></video>`;
+
+  modalInfo.innerHTML = `
+    <div><div class="modal-info-item-label">${t('modal.project')}</div><div class="modal-info-item-value">${item.title}</div></div>
+    <div><div class="modal-info-item-label">${t('modal.category')}</div><div class="modal-info-item-value">${t('category.' + item.category)}</div></div>
+    <div><div class="modal-info-item-label">${t('modal.year')}</div><div class="modal-info-item-value">${item.year}</div></div>
+  `;
+
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('no-scroll');
+  if (lenis) lenis.stop();
+}
+
+function closeModal() {
+  const modal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  modalVideo.innerHTML = '';
+  document.body.classList.remove('no-scroll');
+  if (lenis) lenis.start();
+}
+
+/* FORM */
+function setupForm() {
+  const form = document.getElementById('contactForm');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalBtnHtml = submitBtn.innerHTML;
+  const successEl = document.getElementById('formSuccess');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let valid = true;
+    form.querySelectorAll('.form-field').forEach(f => f.classList.remove('is-error'));
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+
+    if (!name) { form.name.closest('.form-field').classList.add('is-error'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      form.email.closest('.form-field').classList.add('is-error'); valid = false;
+    }
+    if (!message) { form.message.closest('.form-field').classList.add('is-error'); valid = false; }
+    if (!valid) return;
+
+    if (FORM_ENDPOINT.includes('YOUR_FORM_ID')) {
+      const subject = encodeURIComponent(`Contact from ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+      window.location.href = `mailto:contact@vennancio.rec?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = currentLang === 'pt-BR' ? 'Enviando...' : 'Sending...';
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message, _subject: `Portfolio contact from ${name}` })
+      });
+
+      if (res.ok) {
+        successEl.classList.add('is-visible');
+        form.reset();
+        setTimeout(() => successEl.classList.remove('is-visible'), 6000);
+      } else {
+        alert(currentLang === 'pt-BR'
+          ? 'Erro ao enviar. Tente novamente ou escreva direto para contact@vennancio.rec'
+          : 'Failed to send. Try again or email contact@vennancio.rec directly.');
+      }
+    } catch (err) {
+      alert(currentLang === 'pt-BR'
+        ? 'Erro de conexão. Tente novamente ou escreva direto para contact@vennancio.rec'
+        : 'Connection error. Try again or email contact@vennancio.rec directly.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+    }
+  });
+}
+</script>
+
+</body>
+</html>
